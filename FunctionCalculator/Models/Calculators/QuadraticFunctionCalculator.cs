@@ -16,7 +16,7 @@ namespace FunctionCalculator.Models.Calculators
 
         public override double Calculate(double x, double y)
         {
-            return A * Math.Pow(x, 2) + B * Math.Pow(y, 1) + C;
+            return A * Math.Pow(x, 2) + B * y + C;
         }
     }
 }

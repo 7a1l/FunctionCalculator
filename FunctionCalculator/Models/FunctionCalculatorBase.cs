@@ -21,6 +21,7 @@ namespace FunctionCalculator.Models
             B = b;
             C = c;
         }
+
         public abstract double Calculate(double x, double y);
     }
 }

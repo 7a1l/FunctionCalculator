@@ -21,6 +21,7 @@ namespace FunctionCalculator.Services
         private readonly Dictionary<FunctionType, (double a, double b, double c)> _coefficientsByType = new();
         private readonly IFunctionCalculatorFactory _calculatorFactory;
 
+
         /// <summary>
         /// Инициализирует менеджер с фабрикой калькуляторов.
         /// </summary>

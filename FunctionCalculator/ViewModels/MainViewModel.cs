@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace FunctionCalculator.ViewModels
@@ -57,6 +58,8 @@ namespace FunctionCalculator.ViewModels
         /// <summary>
         /// Коэффициент A
         /// </summary>
+        /// 
+
         public double A 
         { 
             get => _a; 
@@ -65,8 +68,9 @@ namespace FunctionCalculator.ViewModels
                 if (_a != value)
                 {
                     _a = value;
-                    OnPropertyChanged();
                     UpdateCoefficients();
+                    OnPropertyChanged();
+                    
                 }
             } 
         }
@@ -82,8 +86,9 @@ namespace FunctionCalculator.ViewModels
                 if (_b != value)
                 {
                     _b = value;
-                    OnPropertyChanged();
                     UpdateCoefficients();
+                    OnPropertyChanged();
+                    
                 }
             }
         }
@@ -98,8 +103,9 @@ namespace FunctionCalculator.ViewModels
                 if (_c != value)
                 {
                     _c = value;
-                    OnPropertyChanged();
                     UpdateCoefficients();
+                    OnPropertyChanged();
+                    
                 }
             }
         }
@@ -164,7 +170,10 @@ namespace FunctionCalculator.ViewModels
         /// </summary>
         private void RecalculateResult()
         {
+            _functionManager.SetCoefficients(SelectedFunction, A, B, C);
             _functionManager.Recalculate(SelectedFunction);
+            foreach (var row in InputRows)
+                OnPropertyChanged(nameof(row.Result));
         }
 
         /// <summary>
@@ -180,7 +189,7 @@ namespace FunctionCalculator.ViewModels
                
         protected void OnPropertyChanged([CallerMemberName] string propName = "")
         {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
         #endregion
 
