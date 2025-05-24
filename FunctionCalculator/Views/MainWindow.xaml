@@ -5,8 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FunctionCalculator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Колькулятор функций" Height="600" Width="800" ResizeMode="CanResizeWithGrip">
+    <Grid Margin="10" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ListBox Grid.Row="0" Grid.ColumnSpan="3" Name="FunctionsListBox" Margin="10" SelectedItem="{Binding SelectedFunction}" ItemsSource="{Binding Functions}" IsEnabled="True">
+            
+        </ListBox>
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Margin="10">
+            <TextBlock Text="Коэффициент A: "/>
+            <TextBox Text="{Binding A, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10">
+            <TextBlock Text="Коэффициент B: "/>
+            <TextBox Text="{Binding B, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical" Margin="10">
+            <TextBlock Text="Коэффициент C: "/>
+            <TextBox Text="{Binding C, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
 
+        <DataGrid Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding InputRows}"
+                  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="x" Binding="{Binding X, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="y" Binding="{Binding Y, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="f(x, y)" Binding="{Binding Result, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.ColumnSpan="3" Grid.Row="3" Content="Добавить строку" Command="{Binding AddRowCommand}" Height="50" HorizontalAlignment="Right" Margin="10" Width="150"/>
     </Grid>
 </Window>

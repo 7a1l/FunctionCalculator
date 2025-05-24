@@ -1,4 +1,6 @@
-﻿using FunctionCalculator.Models.Interfaces;
+﻿using FunctionCalculator.Models.Calculators;
+using FunctionCalculator.Models.Interfaces;
+using FunctionCalculator.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,9 @@ namespace FunctionCalculator.Models
     /// <summary>
     /// Фабрика для создания объектов IFunctionCalculator по типу функции.
     /// </summary>
-    class FunctionCalculatorFactory
+    public class FunctionCalculatorFactory: IFunctionCalculatorFactory
     {
-        public static IFunctionCalculator create(FunctionType type, double a, double b, double c)
+        public IFunctionCalculator Create(FunctionType type, double a, double b, double c)
         {
             return type switch
             {

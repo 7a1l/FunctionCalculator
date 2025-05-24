@@ -12,7 +12,7 @@ namespace FunctionCalculator.Models
     /// <summary>
     /// Представляет строку таблицы с входными значениями x, y и результатом f(x, y).
     /// </summary>
-    class InputRow
+    class InputRow : INotifyPropertyChanged
     {
         #region Переменные
         private double _x;
@@ -77,10 +77,12 @@ namespace FunctionCalculator.Models
         {
             _functionCalculator = functionCalculator ?? throw new ArgumentNullException(nameof(functionCalculator));
         }
+
         public void Recalculate()
         {
             Result = _functionCalculator.Calculate(X, Y);
         }
+
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));

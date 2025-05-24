@@ -48,7 +48,7 @@ namespace FunctionCalculator.Services
         /// Устанавливает список входных строк и пересчитывает результат.
         /// </summary>
        
-        public void GetRows(FunctionType type, List<InputRow> rows)
+        public void SetRows(FunctionType type, List<InputRow> rows)
         {
             _rowsByType[type] = rows;
         }
