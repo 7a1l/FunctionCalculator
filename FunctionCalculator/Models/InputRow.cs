@@ -34,7 +34,8 @@ namespace FunctionCalculator.Models
                 if (_x != value)
                 {
                     _x = value;
-                    
+                    OnPropertyChanged();
+                    Recalculate();
                 }
             }
         }
@@ -49,7 +50,8 @@ namespace FunctionCalculator.Models
                 if (_y != value)
                 {
                     _y = value;
-
+                    OnPropertyChanged();
+                    Recalculate();
                 }
             }
         }
@@ -59,11 +61,12 @@ namespace FunctionCalculator.Models
         public double Result
         {
             get => _result;
-            private set
+            set
             {
                 if (_result != value)
                 {
                     _result = value;
+                    OnPropertyChanged();
                 }
             }
         }
