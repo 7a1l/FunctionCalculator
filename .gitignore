@@ -1,0 +1,73 @@
+## Build output
+bin/
+obj/
+[Ll]og/
+*.log
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+## NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+*.nuspec
+*.cache
+
+## Rider and ReSharper
+.idea/
+*.sln.iml
+_ReSharper*/
+*.DotSettings.user
+
+## DotCover
+*.dcvr
+
+## Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+
+## Test results
+TestResults/
+*.trx
+
+## Database files
+*.mdf
+*.ldf
+*.ndf
+
+## VS Code
+.vscode/
+
+## Publish
+publish/
+*.Publish.xml
+
+## Visual Studio generated
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.VC.opendb
+
+## WPF designer
+Generated_Code/
+
+## Others
+*.ncb
+*.sbr
+*.scc
+*.vssscc
+*.vspscc
