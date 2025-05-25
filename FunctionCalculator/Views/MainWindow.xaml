@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FunctionCalculator"
+        xmlns:local="clr-namespace:FunctionCalculator.Helpers"
         mc:Ignorable="d"
         Title="Колькулятор функций" Height="600" Width="800" ResizeMode="CanResizeWithGrip">
+    <Window.Resources>
+        <local:FunctionTypeToDisplayNameConverter x:Key="FunctionTypeToDisplayNameConverter"/>
+    </Window.Resources>
     <Grid Margin="10" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -19,26 +22,44 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <ListBox Grid.Row="0" Grid.ColumnSpan="3" Name="FunctionsListBox" Margin="10" SelectedItem="{Binding SelectedFunction}" ItemsSource="{Binding Functions}" IsEnabled="True">
-            
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource FunctionTypeToDisplayNameConverter}}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Margin="10">
             <TextBlock Text="Коэффициент A: "/>
-            <TextBox Text="{Binding A, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding A, UpdateSourceTrigger=PropertyChanged}" local:InputValidator.AllowOnlyNumbers="True" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10">
             <TextBlock Text="Коэффициент B: "/>
-            <TextBox Text="{Binding B, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding B, UpdateSourceTrigger=PropertyChanged}" local:InputValidator.AllowOnlyNumbers="True" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical" Margin="10">
             <TextBlock Text="Коэффициент C: "/>
-            <TextBox Text="{Binding C, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox ItemsSource="{Binding AvailableCValues}" 
+              SelectedItem="{Binding SelectedC, Mode=TwoWay}" Width="100"/>
         </StackPanel>
 
         <DataGrid Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding InputRows}"
                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="x" Binding="{Binding X, UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="y" Binding="{Binding Y, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="X" Binding="{Binding X, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="local:InputValidator.AllowOnlyNumbers" Value="True"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Y" Binding="{Binding Y, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="local:InputValidator.AllowOnlyNumbers" Value="True"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Header="f(x, y)" Binding="{Binding Result, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>

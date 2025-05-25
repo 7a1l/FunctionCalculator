@@ -13,15 +13,10 @@ namespace FunctionCalculator.Models
     /// </summary>
     public enum FunctionType
     {
-        [Description("линейная")]
         Linear,
-        [Description("квадратичная")]
         Quadratic,
-        [Description("кубическая")]
         Cubic,
-        [Description("4-ой степени")]
         Degree4,
-        [Description("5-ой степени")]
         Degree5
     }
 }

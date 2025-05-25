@@ -27,7 +27,7 @@ namespace FunctionCalculator.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         private double _a;
         private double _b;
-        private double _c;
+        private int _selectedc;
         #endregion
 
         #region Команды
@@ -40,6 +40,9 @@ namespace FunctionCalculator.ViewModels
         /// </summary>
         public ObservableCollection<FunctionType> Functions { get; }
 
+        public ObservableCollection<int> AvailableCValues { get; set; } = new();
+
+
         public FunctionType SelectedFunction
         {
             get => _selectedFunction;
@@ -51,6 +54,7 @@ namespace FunctionCalculator.ViewModels
                     _selectedFunction = value;
                     OnPropertyChanged();
                     LoadFunctionData();
+                    UpdateAvailableCValues();
                 }
             }
         }
@@ -95,14 +99,14 @@ namespace FunctionCalculator.ViewModels
         /// <summary>
         /// Коэффициент C
         /// </summary>
-        public double C
+        public int SelectedC
         {
-            get => _c;
+            get => _selectedc;
             set
             {
-                if (_c != value)
+                if (_selectedc != value)
                 {
-                    _c = value;
+                    _selectedc = value;
                     UpdateCoefficients();
                     OnPropertyChanged();
                     
@@ -125,9 +129,10 @@ namespace FunctionCalculator.ViewModels
         {
             _calculatorFactory = new FunctionCalculatorFactory();  
             _functionManager = new FunctionManager(_calculatorFactory);
-            Functions = new ObservableCollection<FunctionType>(Enum.GetValues<FunctionType>());
+            Functions = new ObservableCollection<FunctionType>(Enum.GetValues<FunctionType>());            
             AddRowCommand = new RelayCommand(AddInputRow);
             SelectedFunction = Functions[0];
+            UpdateAvailableCValues();
         }
 
         /// <summary>
@@ -135,7 +140,7 @@ namespace FunctionCalculator.ViewModels
         /// </summary>
         private void SaveCurrentCoefficients()
         {
-            _functionManager.SetCoefficients(SelectedFunction, A, B, C);
+            _functionManager.SetCoefficients(SelectedFunction, A, B, SelectedC);
             _functionManager.SetRows(SelectedFunction, InputRows.ToList());
 
         }
@@ -148,7 +153,7 @@ namespace FunctionCalculator.ViewModels
             var coefficients = _functionManager.GetCoefficients(SelectedFunction);
             A = coefficients.a;
             B = coefficients.b;
-            C = coefficients.c;
+            SelectedC = (int)coefficients.c;
 
             var rows = _functionManager.GetRows(SelectedFunction);
             InputRows = new ObservableCollection<InputRow>(rows);
@@ -161,7 +166,7 @@ namespace FunctionCalculator.ViewModels
         /// </summary>
         private void UpdateCoefficients()
         {
-            _functionManager.SetCoefficients(SelectedFunction, A, B, C);
+            _functionManager.SetCoefficients(SelectedFunction, A, B, SelectedC);
             RecalculateResult();
         }
 
@@ -170,7 +175,7 @@ namespace FunctionCalculator.ViewModels
         /// </summary>
         private void RecalculateResult()
         {
-            _functionManager.SetCoefficients(SelectedFunction, A, B, C);
+            _functionManager.SetCoefficients(SelectedFunction, A, B, SelectedC);
             _functionManager.Recalculate(SelectedFunction);
             foreach (var row in InputRows)
                 OnPropertyChanged(nameof(row.Result));
@@ -181,12 +186,32 @@ namespace FunctionCalculator.ViewModels
         /// </summary>
         private void AddInputRow()
         {
-            var calculator = _calculatorFactory.Create(SelectedFunction, A, B, C);
+            var calculator = _calculatorFactory.Create(SelectedFunction, A, B, SelectedC);
             var newRow = new InputRow(calculator) { X = 0, Y = 0, Result = 0 };
             InputRows.Add(newRow);
             RecalculateResult();
         }
-               
+                
+        private void UpdateAvailableCValues()
+        {
+            AvailableCValues.Clear();
+            int degree = SelectedFunction switch
+            {
+                FunctionType.Linear => 1,
+                FunctionType.Quadratic => 2,
+                FunctionType.Cubic => 3,
+                FunctionType.Degree4 => 4,
+                FunctionType.Degree5 => 5,
+                _ => 1
+            };
+
+            var values =  Enumerable.Range(1, 10).Select(x => x * (int)Math.Pow(10, degree - 1));
+
+            foreach (var value in values)
+            {
+                AvailableCValues.Add(value);
+            }
+        }
         protected void OnPropertyChanged([CallerMemberName] string propName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
